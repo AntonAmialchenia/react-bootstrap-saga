@@ -26,10 +26,10 @@ const posts: Post[] = [
 
 export const PostList: FC = () => {
   return (
-    <div>
+    <>
       {posts.map((post) => (
         <PostItem key={post.id} post={post} />
       ))}
-    </div>
+    </>
   );
 };

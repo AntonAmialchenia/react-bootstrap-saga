@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { Button, Col, Image, Row } from "react-bootstrap";
+import { Button, Card, Col, Image, Row } from "react-bootstrap";
 import avatar from "../../../assets/Avatar.jpg";
 
 import styles from "./PostItem.module.scss";
@@ -52,29 +52,35 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const [show, setShow] = useState<boolean>(false);
 
   return (
-    <Row className={`gap-4 align-items-center  ${styles.wrapper}`}>
-      <Col xs={3} md={2}>
-        <Image className={styles.image} src={avatar} roundedCircle />
-      </Col>
-      <Col>
-        <Row className="fz-1">
-          <h3>{post.title}</h3>
-        </Row>
-        <Row className="mb-4">{post.body}</Row>
-        <Row>
-          <Col className={styles.button}>
-            <Button onClick={() => setShow((prev) => !prev)}>Comments</Button>
+    <Card className={`mb-4 ${styles.wrapper}`}>
+      <Card.Body>
+        <Row className={`align-items-center mb-3 ${styles.row}`}>
+          <Col sm={3} md={3}>
+            <Image className={styles.image} src={avatar} roundedCircle />
+          </Col>
+          <Col>
+            <Row>
+              <h3>{post.title}</h3>
+            </Row>
+            <Row className="mb-3">{post.body}</Row>
+            <Row>
+              <Col className={styles.button}>
+                <Button onClick={() => setShow((prev) => !prev)}>
+                  Comments
+                </Button>
+              </Col>
+            </Row>
           </Col>
         </Row>
-      </Col>
-      <Row className="justify-content-end">
-        <Col sm={6}>
-          {show &&
-            comments.map((comment) => (
-              <CommentItem key={comment.id} comment={comment} />
-            ))}
-        </Col>
-      </Row>
-    </Row>
+        <Row className="justify-content-end">
+          <Col sm={6}>
+            {show &&
+              comments.map((comment) => (
+                <CommentItem key={comment.id} comment={comment} />
+              ))}
+          </Col>
+        </Row>
+      </Card.Body>
+    </Card>
   );
 };

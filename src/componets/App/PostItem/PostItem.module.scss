@@ -1,8 +1,8 @@
 
 
 .wrapper {
-    padding: 0 10px;
-    
+    padding: 20px;    
+
     .image {
     width: 100px;
     height: 100px;    
@@ -12,7 +12,12 @@
         text-align: end;
     }
 
-    @media screen and (width < 768px) {
-        flex-direction: column;
+    .row {
+        @media screen and (width < 768px) {
+            gap: 15px;
+            flex-direction: column;
+        }
     }
+
+    
 }
