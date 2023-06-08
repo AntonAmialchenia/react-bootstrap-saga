@@ -36,7 +36,7 @@ export const Header: FC = () => {
                     ? [styles.active, styles.link].join(" ")
                     : styles.link
                 }
-                to="user">
+                to="about">
                 About
               </NavLink>
             </Nav>
