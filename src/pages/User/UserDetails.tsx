@@ -1,5 +1,5 @@
-import React from "react";
+import React, { FC } from "react";
 
-export const UserDetails = () => {
+export const UserDetails: FC = () => {
   return <div>User</div>;
 };

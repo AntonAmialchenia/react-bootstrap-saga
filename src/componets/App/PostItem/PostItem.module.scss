@@ -1,0 +1,18 @@
+
+
+.wrapper {
+    padding: 0 10px;
+    
+    .image {
+    width: 100px;
+    height: 100px;    
+    }
+
+    .button {
+        text-align: end;
+    }
+
+    @media screen and (width < 768px) {
+        flex-direction: column;
+    }
+}

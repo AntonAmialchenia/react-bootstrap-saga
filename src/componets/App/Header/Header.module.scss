@@ -2,6 +2,7 @@
 .link {
     text-decoration: none;
     color: blue;
+    transition: color 0.3s ease 0s;
 
     &:hover {
         color: rgba($color: blue, $alpha: 0.5);
