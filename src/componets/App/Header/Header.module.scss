@@ -1,0 +1,14 @@
+
+.link {
+    text-decoration: none;
+    color: blue;
+
+    &:hover {
+        color: rgba($color: blue, $alpha: 0.5);
+    }
+    
+}
+
+.active {
+    color: rgba($color: rgb(2, 2, 39), $alpha: 7.0);
+}
