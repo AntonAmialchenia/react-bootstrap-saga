@@ -16,7 +16,7 @@ const initialState: commentState = {
 export function* getCommentsSaga(action: PayloadAction<number>) {
   const id = action.payload;
   try {
-    yield delay(500);
+    yield delay(1000);
     const { data } = yield call(getCommentsAll, id);
 
     yield put(getCommentsSuccess(data));
@@ -36,12 +36,9 @@ const commentsSlice = createSlice({
       state.items = action.payload;
       state.loading = false;
     },
-    getCommentsFailed: (state) => {
-      state.loading = false;
-    },
   },
 });
 
-export const { getCommentsSuccess, getCommentsByPostId, getCommentsFailed } =
+export const { getCommentsSuccess, getCommentsByPostId } =
   commentsSlice.actions;
 export default commentsSlice.reducer;

@@ -1,7 +1,7 @@
 import createSagaMiddleware from "redux-saga";
 import { configureStore } from "@reduxjs/toolkit";
 import { takeEvery } from "redux-saga/effects";
-import posts, { GET_POSTS, getPostsSaga } from "./slices/postSlice";
+import posts, { getPosts, getPostsSaga } from "./slices/postSlice";
 import comments, {
   getCommentsSaga,
   getCommentsByPostId,
@@ -10,7 +10,7 @@ import comments, {
 const sagaMiddleware = createSagaMiddleware();
 
 function* sagas() {
-  yield takeEvery(GET_POSTS, getPostsSaga);
+  yield takeEvery(getPosts, getPostsSaga);
   yield takeEvery(getCommentsByPostId, getCommentsSaga);
 }
 
