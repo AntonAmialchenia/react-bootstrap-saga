@@ -1,13 +1,15 @@
 import { FC, useState } from "react";
+import { Link } from "react-router-dom";
 import { Button, Card, Col, Image, Row } from "react-bootstrap";
 
 import { Post } from "../../types/types";
 import { CommentsList } from "../CommentsList";
 
-import avatar from "../../assets/Avatar.jpg";
-import styles from "./PostItem.module.scss";
 import { useAppDispatch } from "../../store/hooks";
 import { getCommentsByPostId } from "../../store/slices/commentSlice";
+
+import avatar from "../../assets/Avatar.jpg";
+import styles from "./PostItem.module.scss";
 
 interface PostItemProps {
   post: Post;
@@ -27,7 +29,9 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
       <Card.Body className="p-0">
         <Row className={`align-items-center ${styles.row}`}>
           <Col sm={3} md={3}>
-            <Image className={styles.image} src={avatar} roundedCircle />
+            <Link to="/user">
+              <Image className={styles.image} src={avatar} roundedCircle />
+            </Link>
           </Col>
           <Col>
             <Row>
