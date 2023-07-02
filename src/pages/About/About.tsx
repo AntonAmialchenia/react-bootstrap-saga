@@ -1,5 +1,4 @@
-import React from "react";
-import { Card, ListGroup } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 import avatar from "../../assets/Anton.png";
 

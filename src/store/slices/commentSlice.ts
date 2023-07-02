@@ -1,5 +1,5 @@
-import { PayloadAction, createAction, createSlice } from "@reduxjs/toolkit";
-import { call, put } from "redux-saga/effects";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { call, delay, put } from "redux-saga/effects";
 import { getCommentsAll } from "../../api/comments";
 import { Comment } from "../../types/types";
 
@@ -16,12 +16,12 @@ const initialState: commentState = {
 export function* getCommentsSaga(action: PayloadAction<number>) {
   const id = action.payload;
   try {
+    yield delay(500);
     const { data } = yield call(getCommentsAll, id);
 
     yield put(getCommentsSuccess(data));
   } catch (error) {
     console.log(error);
-    // yield put(getCommentsFailed(error.message))
   }
 }
 
@@ -34,15 +34,13 @@ const commentsSlice = createSlice({
     },
     getCommentsSuccess: (state, action: PayloadAction<Comment[]>) => {
       state.items = action.payload;
+      state.loading = false;
     },
     getCommentsFailed: (state) => {
       state.loading = false;
     },
   },
 });
-
-export const GET_COMMENTS = "comments/getComments";
-export const getComments = createAction(GET_COMMENTS);
 
 export const { getCommentsSuccess, getCommentsByPostId, getCommentsFailed } =
   commentsSlice.actions;

@@ -1,16 +1,14 @@
-
-
 .wrapper {
     padding: 20px;    
 
     .image {
-    width: 100px;
-    height: 100px;    
+        width: 100px;
+        height: 100px;    
     }
 
     .button {
         text-align: end;
-    }
+    }    
 
     .row {
         @media screen and (width < 768px) {

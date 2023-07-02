@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { Button, Card, Col, Image, Row } from "react-bootstrap";
 
 import { Post } from "../../types/types";
@@ -24,8 +24,8 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
 
   return (
     <Card className={`mb-4 ${styles.wrapper}`}>
-      <Card.Body>
-        <Row className={`align-items-center mb-3 ${styles.row}`}>
+      <Card.Body className="p-0">
+        <Row className={`align-items-center ${styles.row}`}>
           <Col sm={3} md={3}>
             <Image className={styles.image} src={avatar} roundedCircle />
           </Col>
@@ -36,16 +36,24 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
             <Row className="mb-3">{post.body}</Row>
             <Row>
               <Col className={styles.button}>
-                <Button onClick={() => handlerByComments(post.id)}>
-                  Comments
-                </Button>
+                {show ? (
+                  <Button onClick={() => setShow((prev) => !prev)}>
+                    Close
+                  </Button>
+                ) : (
+                  <Button onClick={() => handlerByComments(post.id)}>
+                    Comments
+                  </Button>
+                )}
               </Col>
             </Row>
           </Col>
         </Row>
-        <Row className="justify-content-end">
-          <Col sm={6}>{show && <CommentsList />}</Col>
-        </Row>
+        {show && (
+          <Row className="justify-content-end mt-3">
+            <Col sm={6}>{<CommentsList />}</Col>
+          </Row>
+        )}
       </Card.Body>
     </Card>
   );

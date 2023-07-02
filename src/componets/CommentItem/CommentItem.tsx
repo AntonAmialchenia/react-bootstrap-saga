@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Comment } from "../../types/types";
 import { Card } from "react-bootstrap";
 

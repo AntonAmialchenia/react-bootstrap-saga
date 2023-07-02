@@ -1,0 +1,16 @@
+.wrap {
+
+    @media screen and (width < 576px) {
+        justify-content: center;
+    }
+   .spinner {    
+        width: 150px;
+        height: 150px;
+
+        @media screen and (width >= 576px) {
+            margin-left: -75px;
+        }
+        
+    } 
+}
+
