@@ -2,7 +2,7 @@ import React, { FC } from "react";
 import { Nav, Navbar, Offcanvas, Image } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
 
-import avatar from "../../../assets/Avatar.jpg";
+import avatar from "../../assets/Avatar.jpg";
 
 import styles from "./Header.module.scss";
 

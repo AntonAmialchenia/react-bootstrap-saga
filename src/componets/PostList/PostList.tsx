@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { PostItem } from "../PostItem";
-import { useAppSelector } from "../../../store/hooks";
+import { useAppSelector } from "../../store/hooks";
 
-import { RootState } from "../../../store";
+import { RootState } from "../../store";
 
 export const PostList: FC = () => {
   const { items } = useAppSelector((state: RootState) => state.posts);

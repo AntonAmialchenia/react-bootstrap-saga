@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Comment } from "../../../types/types";
-import { Card, Col, Row } from "react-bootstrap";
+import { Comment } from "../../types/types";
+import { Card } from "react-bootstrap";
 
 interface CommentItemProps {
   comment: Comment;

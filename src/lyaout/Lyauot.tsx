@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Container, Row } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
-import { Header } from "../componets/App/Header";
+import { Header } from "../componets/Header";
 
 export const Lyauot: FC = () => {
   return (

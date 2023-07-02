@@ -13,7 +13,6 @@ const initialState: PostState = {
 
 export function* getPostsSaga() {
   const { data } = yield call(getPostsApi);
-  console.log(data);
 
   yield put(getPostsSuccess(data));
 }
