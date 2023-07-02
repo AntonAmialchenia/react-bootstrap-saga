@@ -29,8 +29,8 @@ const commentsSlice = createSlice({
   name: "comments",
   initialState,
   reducers: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getCommentsByPostId: (state, action: PayloadAction<number>) => {
+      action;
       state.loading = true;
     },
     getCommentsSuccess: (state, action: PayloadAction<Comment[]>) => {

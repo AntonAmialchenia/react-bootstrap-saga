@@ -29,8 +29,8 @@ const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     getUser: (state, action: PayloadAction<number>) => {
+      action;
       state.loading = true;
     },
     getUserSuccess: (state, action: PayloadAction<User>) => {
