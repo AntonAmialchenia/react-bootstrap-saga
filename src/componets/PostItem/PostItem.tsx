@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button, Card, Col, Image, Row } from "react-bootstrap";
 
 import { Post } from "../../types/types";
@@ -17,6 +17,7 @@ interface PostItemProps {
 
 export const PostItem: FC<PostItemProps> = ({ post }) => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
 
   const handlerByComments = (id: number) => {
@@ -29,9 +30,12 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
       <Card.Body className="p-0">
         <Row className={`align-items-center ${styles.row}`}>
           <Col sm={3} md={3}>
-            <Link to="/user">
-              <Image className={styles.image} src={avatar} roundedCircle />
-            </Link>
+            <Image
+              onClick={() => navigate(`/user/${post.userId}`)}
+              className={styles.image}
+              src={avatar}
+              roundedCircle
+            />
           </Col>
           <Col>
             <Row>

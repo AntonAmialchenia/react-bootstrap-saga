@@ -9,8 +9,9 @@ export const App: FC = () => {
   return (
     <Routes>
       <Route path="/" element={<Lyauot />}>
+        <Route path="*" element={<Posts />} />
         <Route path="" element={<Posts />} />
-        <Route path="user" element={<UserDetails />} />
+        <Route path="user/:id" element={<UserDetails />} />
         <Route path="about" element={<About />} />
       </Route>
     </Routes>

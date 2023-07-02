@@ -16,7 +16,7 @@ const initialState: commentState = {
 export function* getCommentsSaga(action: PayloadAction<number>) {
   const id = action.payload;
   try {
-    yield delay(1000);
+    yield delay(500);
     const { data } = yield call(getCommentsAll, id);
 
     yield put(getCommentsSuccess(data));

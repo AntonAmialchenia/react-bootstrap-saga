@@ -1,27 +1,46 @@
-import { FC } from "react";
-import { Container } from "react-bootstrap";
+import { FC, useEffect } from "react";
+import { Button, Container, Row } from "react-bootstrap";
 import { PostList } from "../../componets/PostList";
-import { useAppSelector } from "../../store/hooks";
-
-const user = {
-  name: "Leanne Graham",
-  email: "Sincere@april.biz",
-  website: "hildegard.org",
-};
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { Link, useParams } from "react-router-dom";
+import { getPosts } from "../../store/slices/postSlice";
+import { SpinnerApp } from "../../componets/SpinnerApp";
+import { getUser } from "../../store/slices/userSlice";
 
 export const UserDetails: FC = () => {
-  const posts = useAppSelector((state) => state.posts.items).filter(
-    (post) => post.userId === 1,
+  const dispatch = useAppDispatch();
+  const params = useParams();
+
+  const { items, loading: loadingPosts } = useAppSelector(
+    (state) => state.posts,
   );
-  return (
+  const { user, loading: loadingUser } = useAppSelector((state) => state.user);
+
+  const posts = items.filter((post) => post.userId === Number(params.id));
+
+  useEffect(() => {
+    dispatch(getPosts());
+    dispatch(getUser(Number(params.id)));
+  }, [dispatch]);
+
+  return loadingUser ? (
+    <SpinnerApp />
+  ) : (
     <Container>
-      <h2>{user.name}</h2>
-      <p>{user.email}</p>
-      <a href="hildegard.org">{user.website}</a>
+      <div className="d-flex justify-content-between">
+        <h2>{user.name}</h2>
+        <Link to="/">
+          <Button>Exit</Button>
+        </Link>
+      </div>
+      <p>Email: {user.email}</p>
+      <p>
+        Site: <a href="hildegard.org">{user.website}</a>
+      </p>
       <p>
         Posts <strong>{user.name}:</strong>
       </p>
-      <PostList posts={posts} />
+      {loadingPosts ? <SpinnerApp /> : <PostList posts={posts} />}
     </Container>
   );
 };

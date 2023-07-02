@@ -14,10 +14,14 @@ const initialState: PostState = {
 };
 
 export function* getPostsSaga() {
-  yield delay(1000);
-  const { data } = yield call(getPostsApi);
+  try {
+    yield delay(500);
+    const { data } = yield call(getPostsApi);
 
-  yield put(getPostsSuccess(data));
+    yield put(getPostsSuccess(data));
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 const postsSlice = createSlice({

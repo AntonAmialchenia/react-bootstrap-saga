@@ -1,10 +1,8 @@
 import { FC, useEffect } from "react";
-import { Row, Spinner } from "react-bootstrap";
 import { PostList } from "../../componets/PostList";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getPosts } from "../../store/slices/postSlice";
-
-import styles from "./Posts.module.scss";
+import { SpinnerApp } from "../../componets/SpinnerApp";
 
 export const Posts: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,21 +14,7 @@ export const Posts: FC = () => {
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
-      {loading ? (
-        <Row className={styles.wrap}>
-          <Spinner
-            as="span"
-            animation="border"
-            role="status"
-            aria-hidden="true"
-            variant="secondary"
-            w-25
-            className={styles.spinner}
-          />
-        </Row>
-      ) : (
-        <PostList posts={items} />
-      )}
+      {loading ? <SpinnerApp /> : <PostList posts={items} />}
     </div>
   );
 };
