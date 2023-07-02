@@ -1,5 +1,5 @@
 import { FC, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, Card, Col, Image, Row } from "react-bootstrap";
 
 import { Post } from "../../types/types";

@@ -1,5 +1,5 @@
 import { FC, useEffect } from "react";
-import { Button, Container, Row } from "react-bootstrap";
+import { Button, Container } from "react-bootstrap";
 import { PostList } from "../../componets/PostList";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Link, useParams } from "react-router-dom";
@@ -21,7 +21,7 @@ export const UserDetails: FC = () => {
   useEffect(() => {
     dispatch(getPosts());
     dispatch(getUser(Number(params.id)));
-  }, [dispatch]);
+  }, [dispatch, params.id]);
 
   return loadingUser ? (
     <SpinnerApp />
