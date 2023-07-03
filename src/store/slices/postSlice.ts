@@ -1,6 +1,4 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { call, delay, put } from "redux-saga/effects";
-import { getPostsApi } from "../../api/posts";
 import { Post } from "../../types/types";
 
 interface PostState {
@@ -12,17 +10,6 @@ const initialState: PostState = {
   items: [],
   loading: false,
 };
-
-export function* getPostsSaga() {
-  try {
-    yield delay(500);
-    const { data } = yield call(getPostsApi);
-
-    yield put(getPostsSuccess(data));
-  } catch (error) {
-    console.log(error);
-  }
-}
 
 const postsSlice = createSlice({
   name: "posts",
