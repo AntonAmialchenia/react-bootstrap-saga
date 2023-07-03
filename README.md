@@ -10,9 +10,10 @@
 ## Исползуемые технологии
 1. React + TypeScript
 2. Redux-Toolkit + Redux-Saga
-3. Навигация React-router-dom
-4. axios для запросов на сервер
-5. Vite для сборки
+3. React-bootstrap
+4. Навигация React-router-dom
+5. axios для запросов на сервер
+6. Vite для сборки
 
 
 ## Установка и запуск
