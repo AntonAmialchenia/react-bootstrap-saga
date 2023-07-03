@@ -1,20 +1,11 @@
 import createSagaMiddleware from "redux-saga";
 import { configureStore } from "@reduxjs/toolkit";
-import { takeEvery } from "redux-saga/effects";
-import posts, { getPosts, getPostsSaga } from "./slices/postSlice";
-import comments, {
-  getCommentsSaga,
-  getCommentsByPostId,
-} from "./slices/commentSlice";
-import user, { getUser, getUserSaga } from "./slices/userSlice";
+import posts from "./slices/postSlice";
+import comments from "./slices/commentSlice";
+import user from "./slices/userSlice";
+import { sagas } from "../sagas";
 
 const sagaMiddleware = createSagaMiddleware();
-
-function* sagas() {
-  yield takeEvery(getPosts, getPostsSaga);
-  yield takeEvery(getCommentsByPostId, getCommentsSaga);
-  yield takeEvery(getUser, getUserSaga);
-}
 
 export const store = configureStore({
   reducer: {
