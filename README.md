@@ -7,6 +7,14 @@
 2. Стрница обо мне
 3. Страница пользователя с его постами , открывается по нажатию на аватар поста
 
+## Исползуемые технологии
+1. React + TypeScript
+2. Redux-Toolkit + Redux-Saga
+3. Навигация React-router-dom
+4. axios для запросов на сервер
+5. Vite для сборки
+
+
 ## Установка и запуск
 
 1. Клонирование репозитория`$ git clone` [https://github.com/AntonAmialchenia/react-bootstrap-saga.git](https://github.com/AntonAmialchenia/react-bootstrap-saga.git)
