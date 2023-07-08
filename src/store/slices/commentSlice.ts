@@ -1,31 +1,42 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Comment } from "../../types/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Comment } from "../../types";
+import { Status } from "../../enums";
+import { getCommentsApi } from "../../api/comments";
 
 interface commentState {
   items: Comment[];
-  loading: boolean;
+  status: Status;
 }
 
 const initialState: commentState = {
   items: [],
-  loading: false,
+  status: Status.LOADING,
 };
+
+export const fetchComments = createAsyncThunk<Comment[], number>(
+  "comments/fetchCommentsStatus",
+  getCommentsApi,
+);
 
 const commentsSlice = createSlice({
   name: "comments",
   initialState,
-  reducers: {
-    getCommentsByPostId: (state, action: PayloadAction<number>) => {
-      action;
-      state.loading = true;
-    },
-    getCommentsSuccess: (state, action: PayloadAction<Comment[]>) => {
-      state.items = action.payload;
-      state.loading = false;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchComments.pending, (state) => {
+        state.status = Status.LOADING;
+        state.items = [];
+      })
+      .addCase(fetchComments.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.status = Status.SUCCESS;
+      })
+      .addCase(fetchComments.rejected, (state) => {
+        state.status = Status.ERROR;
+        state.items = [];
+      });
   },
 });
 
-export const { getCommentsSuccess, getCommentsByPostId } =
-  commentsSlice.actions;
 export default commentsSlice.reducer;

@@ -1,29 +1,42 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Post } from "../../types/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { Post } from "../../types";
+import { getPostsApi } from "../../api/posts";
+import { Status } from "../../enums";
 
 interface PostState {
   items: Post[];
-  loading: boolean;
+  status: Status;
 }
 
 const initialState: PostState = {
   items: [],
-  loading: false,
+  status: Status.LOADING,
 };
+
+export const fetchPosts = createAsyncThunk<Post[]>(
+  "posts/fetchPostsStatus",
+  getPostsApi,
+);
 
 const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {
-    getPosts: (state) => {
-      state.loading = true;
-    },
-    getPostsSuccess: (state, action: PayloadAction<Post[]>) => {
-      state.items = action.payload;
-      state.loading = false;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPosts.pending, (state) => {
+        state.status = Status.LOADING;
+        state.items = [];
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.status = Status.SUCCESS;
+      })
+      .addCase(fetchPosts.rejected, (state) => {
+        state.status = Status.ERROR;
+        state.items = [];
+      });
   },
 });
 
-export const { getPostsSuccess, getPosts } = postsSlice.actions;
 export default postsSlice.reducer;

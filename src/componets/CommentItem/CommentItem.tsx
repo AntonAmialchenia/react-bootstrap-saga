@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Comment } from "../../types/types";
+import { Comment } from "../../types";
 import { Card } from "react-bootstrap";
 
 interface CommentItemProps {

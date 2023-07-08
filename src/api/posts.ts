@@ -1,5 +1,9 @@
 import axios from "axios";
+import { Post } from "../types";
 
 export const getPostsApi = async () => {
-  return await axios.get("https://jsonplaceholder.typicode.com/posts");
+  const { data } = await axios.get<Post[]>(
+    "https://jsonplaceholder.typicode.com/posts",
+  );
+  return data;
 };
