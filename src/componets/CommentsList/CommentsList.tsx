@@ -11,10 +11,12 @@ export const CommentsList: FC = () => {
     <>
       {loading ? (
         <SpinnerApp />
-      ) : (
+      ) : Array.isArray(items) ? (
         items.map((comment) => (
           <CommentItem key={comment.id} comment={comment} />
         ))
+      ) : (
+        <h2>Комментарии не найдены</h2>
       )}
     </>
   );

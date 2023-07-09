@@ -6,6 +6,7 @@ import { SpinnerApp } from "../../componets/SpinnerApp";
 
 export const Posts: FC = () => {
   const dispatch = useAppDispatch();
+
   const { items, loading } = useAppSelector((state) => state.posts);
 
   useEffect(() => {
@@ -14,6 +15,7 @@ export const Posts: FC = () => {
 
   return (
     <div className="d-flex flex-column align-items-center justify-content-center">
+      <h1 className="mb-4">Список постов</h1>
       {loading ? <SpinnerApp /> : <PostList posts={items} />}
     </div>
   );
