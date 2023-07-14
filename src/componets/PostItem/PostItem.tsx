@@ -39,6 +39,7 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
         setShow={setShowModal}
         deletePost={handlerDeletePost}
         id={post.id}
+        title="Удаление поста"
       />
       <Card className={`mb-4 ${styles.wrapper} position-relative`}>
         <Card.Body className="p-0">
