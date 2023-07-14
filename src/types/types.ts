@@ -5,6 +5,8 @@ export interface Post {
   body: string;
 }
 
+export type NewPost = Pick<Post, "userId" | "title" | "body">;
+
 export interface Comment {
   postId: number;
   id: number;
