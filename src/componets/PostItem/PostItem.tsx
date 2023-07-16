@@ -1,14 +1,23 @@
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Card, CloseButton, Col, Image, Row } from "react-bootstrap";
+import {
+  Button,
+  Card,
+  CloseButton,
+  Col,
+  Image,
+  Row,
+  Form,
+  Spinner,
+} from "react-bootstrap";
 
 import { Post } from "../../types/types";
 import { CommentsList } from "../CommentsList";
 import { ModalApp } from "../ModalApp";
 
-import { useAppDispatch } from "../../store/hooks";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { getCommentsByPostId } from "../../store/slices/commentSlice";
-import { deletePost } from "../../store/slices/postSlice";
+import { deletePost, updatePost } from "../../store/slices/postSlice";
 
 import avatar from "../../assets/Avatar.jpg";
 import styles from "./PostItem.module.scss";
@@ -19,13 +28,23 @@ interface PostItemProps {
 
 export const PostItem: FC<PostItemProps> = ({ post }) => {
   const dispatch = useAppDispatch();
+  const { update } = useAppSelector((state) => state.posts);
   const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [edit, setEdit] = useState(false);
+  const [title, setTitle] = useState(post.title);
+  const [body, setBody] = useState(post.body);
 
   const handlerByComments = (id: number) => {
     dispatch(getCommentsByPostId(id));
     setShow((prev) => !prev);
+  };
+
+  const handlerUpdatePost = (post: Post) => {
+    const postUpdate = { ...post, title, body };
+    dispatch(updatePost(postUpdate));
+    setEdit(update);
   };
 
   const handlerDeletePost = (id: number) => {
@@ -47,6 +66,7 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
             className="position-absolute"
             onClick={() => setShowModal((prev) => !prev)}
           />
+
           <Row className={`align-items-center ${styles.row}`}>
             <Col sm={3} md={3} className="d-flex justify-content-center">
               <Image
@@ -57,10 +77,49 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
               />
             </Col>
             <Col>
+              <Col className="d-flex justify-content-end mb-3">
+                {edit ? (
+                  <Button onClick={() => handlerUpdatePost(post)}>
+                    {update ? (
+                      <Spinner
+                        style={{ width: 16, height: 16 }}
+                        animation="grow"
+                      />
+                    ) : (
+                      ""
+                    )}
+                    Save
+                  </Button>
+                ) : (
+                  <Button onClick={() => setEdit(true)}>Edit</Button>
+                )}
+              </Col>
               <Row>
-                <h3>{post.title}</h3>
+                {edit ? (
+                  <Form.Control
+                    className="mb-2"
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    type="text"
+                  />
+                ) : (
+                  <h3>{post.title}</h3>
+                )}
               </Row>
-              <Row className="mb-3">{post.body}</Row>
+              <Row>
+                {edit ? (
+                  <Form.Control
+                    className="mb-3"
+                    rows={3}
+                    value={body}
+                    onChange={(e) => setBody(e.target.value)}
+                    as="textarea"
+                  />
+                ) : (
+                  <p>{post.body}</p>
+                )}
+              </Row>
+
               <Row>
                 <Col className={styles.button}>
                   {show ? (

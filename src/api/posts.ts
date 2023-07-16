@@ -10,7 +10,15 @@ export const deletePostApi = async (id: number) => {
 };
 
 export const createPostApi = async (post: NewPost) => {
-  return await axios.post<Post>(`https://jsonplaceholder.typicode.com/posts`, {
-    ...post,
-  });
+  return await axios.post<Post>(
+    `https://jsonplaceholder.typicode.com/posts`,
+    post,
+  );
+};
+
+export const updatePostApi = async (post: Post) => {
+  return await axios.put<Post>(
+    `https://jsonplaceholder.typicode.com/posts/${post.id}`,
+    post,
+  );
 };

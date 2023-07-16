@@ -1,12 +1,18 @@
 import { call, delay, put } from "redux-saga/effects";
-import { createPostApi, deletePostApi, getPostsApi } from "../api/posts";
+import {
+  createPostApi,
+  deletePostApi,
+  getPostsApi,
+  updatePostApi,
+} from "../api/posts";
 import {
   createPostSuccess,
   deletePostSuccess,
   getPostsSuccess,
+  updatePostSuccess,
 } from "../store/slices/postSlice";
 import { PayloadAction } from "@reduxjs/toolkit";
-import { NewPost } from "../types/types";
+import { NewPost, Post } from "../types/types";
 
 export function* getPostsSaga() {
   try {
@@ -37,6 +43,18 @@ export function* createPostsSaga(action: PayloadAction<NewPost>) {
     console.log(data);
 
     yield put(createPostSuccess(data));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* updatePostsSaga(action: PayloadAction<Post>) {
+  const post = action.payload;
+  try {
+    yield delay(500);
+    const { data } = yield call(updatePostApi, post);
+
+    yield put(updatePostSuccess(data));
   } catch (error) {
     console.log(error);
   }
