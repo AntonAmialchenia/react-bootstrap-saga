@@ -1,7 +1,12 @@
 import { call, delay, put } from "redux-saga/effects";
-import { deletePostApi, getPostsApi } from "../api/posts";
-import { deletePostSuccess, getPostsSuccess } from "../store/slices/postSlice";
+import { createPostApi, deletePostApi, getPostsApi } from "../api/posts";
+import {
+  createPostSuccess,
+  deletePostSuccess,
+  getPostsSuccess,
+} from "../store/slices/postSlice";
 import { PayloadAction } from "@reduxjs/toolkit";
+import { NewPost } from "../types/types";
 
 export function* getPostsSaga() {
   try {
@@ -20,6 +25,18 @@ export function* deletePostsSaga(action: PayloadAction<number>) {
     yield call(deletePostApi, id);
 
     yield put(deletePostSuccess(id));
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+export function* createPostsSaga(action: PayloadAction<NewPost>) {
+  const post = action.payload;
+  try {
+    const { data } = yield call(createPostApi, post);
+    console.log(data);
+
+    yield put(createPostSuccess(data));
   } catch (error) {
     console.log(error);
   }

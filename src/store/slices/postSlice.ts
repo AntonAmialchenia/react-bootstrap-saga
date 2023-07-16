@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { Post } from "../../types/types";
+import { NewPost, Post } from "../../types/types";
 
 interface PostState {
   items: Post[];
@@ -29,9 +29,22 @@ const postsSlice = createSlice({
     deletePostSuccess: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    createPost: (state, action: PayloadAction<NewPost>) => {
+      state;
+      action;
+    },
+    createPostSuccess: (state, action: PayloadAction<Post>) => {
+      state.items.unshift(action.payload);
+    },
   },
 });
 
-export const { getPostsSuccess, getPosts, deletePost, deletePostSuccess } =
-  postsSlice.actions;
+export const {
+  getPostsSuccess,
+  getPosts,
+  deletePost,
+  deletePostSuccess,
+  createPost,
+  createPostSuccess,
+} = postsSlice.actions;
 export default postsSlice.reducer;
