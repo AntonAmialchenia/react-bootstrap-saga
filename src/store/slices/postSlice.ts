@@ -4,11 +4,13 @@ import { NewPost, Post } from "../../types/types";
 interface PostState {
   items: Post[];
   loading: boolean;
+  update: boolean;
 }
 
 const initialState: PostState = {
   items: [],
   loading: false,
+  update: false,
 };
 
 const postsSlice = createSlice({
@@ -36,6 +38,16 @@ const postsSlice = createSlice({
     createPostSuccess: (state, action: PayloadAction<Post>) => {
       state.items.unshift(action.payload);
     },
+    updatePost: (state, action: PayloadAction<Post>) => {
+      state.update = true;
+      action;
+    },
+    updatePostSuccess: (state, action: PayloadAction<Post>) => {
+      state.items = state.items.map((item) =>
+        item.id === action.payload.id ? action.payload : item,
+      );
+      state.update = false;
+    },
   },
 });
 
@@ -46,5 +58,7 @@ export const {
   deletePostSuccess,
   createPost,
   createPostSuccess,
+  updatePost,
+  updatePostSuccess,
 } = postsSlice.actions;
 export default postsSlice.reducer;
