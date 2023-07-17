@@ -3,7 +3,7 @@ import { Container, Row } from "react-bootstrap";
 import { Outlet } from "react-router-dom";
 import { Header } from "../componets/Header";
 
-export const Lyauot: FC = () => {
+export const Layout: FC = () => {
   return (
     <Container fluid="md">
       <Container fluid>
