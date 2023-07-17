@@ -44,7 +44,7 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const handlerUpdatePost = (post: Post) => {
     const postUpdate = { ...post, title, body };
     dispatch(updatePost(postUpdate));
-    setEdit(update);
+    setTimeout(() => setEdit(update), 1250);
   };
 
   const handlerDeletePost = (id: number) => {
@@ -82,16 +82,17 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
                   <Button onClick={() => handlerUpdatePost(post)}>
                     {update ? (
                       <Spinner
+                        className="me-1"
                         style={{ width: 16, height: 16 }}
                         animation="grow"
                       />
                     ) : (
                       ""
                     )}
-                    Save
+                    <span>Save</span>
                   </Button>
                 ) : (
-                  <Button onClick={() => setEdit(true)}>Edit</Button>
+                  <Button onClick={() => setEdit((prev) => !prev)}>Edit</Button>
                 )}
               </Col>
               <Row>
