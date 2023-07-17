@@ -1,33 +1,42 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { NewPost, Post } from "../../types/types";
+import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { NewPost, Post } from "../../types";
+import { getPostsApi, deletePostApi } from "../../api/posts";
+import { Status } from "../../enums";
 
 interface PostState {
   items: Post[];
-  loading: boolean;
+  status: Status;
   update: boolean;
+  error: boolean;
 }
 
 const initialState: PostState = {
   items: [],
-  loading: false,
   update: false,
+  status: Status.LOADING,
+  error: false,
 };
+
+export const fetchPosts = createAsyncThunk<Post[]>(
+  "posts/fetchPosts",
+  async function () {
+    const { data } = await getPostsApi();
+    return data;
+  },
+);
+
+export const deletePost = createAsyncThunk<void, number>(
+  "posts/deletePosts",
+  async function (id, { dispatch }) {
+    await deletePostApi(id);
+    dispatch(deletePostSuccess(id));
+  },
+);
 
 const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
-    getPosts: (state) => {
-      state.loading = true;
-    },
-    getPostsSuccess: (state, action: PayloadAction<Post[]>) => {
-      state.items = action.payload;
-      state.loading = false;
-    },
-    deletePost: (state, action: PayloadAction<number>) => {
-      action;
-      state;
-    },
     deletePostSuccess: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
@@ -49,16 +58,35 @@ const postsSlice = createSlice({
       state.update = false;
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchPosts.pending, (state) => {
+        state.status = Status.LOADING;
+        state.items = [];
+      })
+      .addCase(fetchPosts.fulfilled, (state, action) => {
+        state.items = action.payload;
+        state.status = Status.SUCCESS;
+      })
+      .addCase(fetchPosts.rejected, (state) => {
+        state.status = Status.ERROR;
+        state.items = [];
+      })
+      .addCase(deletePost.fulfilled, (state) => {
+        state.error = false;
+      })
+      .addCase(deletePost.rejected, (state) => {
+        state.error = true;
+      });
+  },
 });
 
 export const {
-  getPostsSuccess,
-  getPosts,
-  deletePost,
   deletePostSuccess,
   createPost,
   createPostSuccess,
   updatePost,
   updatePostSuccess,
 } = postsSlice.actions;
+
 export default postsSlice.reducer;

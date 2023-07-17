@@ -1,6 +1,7 @@
 import { FC, SetStateAction, useState, MouseEvent } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
-import { NewPost } from "../../types/types";
+import { NewPost } from "../../types";
+import { useAppSelector } from "../../store/hooks";
 
 interface ModalAppProps {
   show: boolean;
@@ -21,6 +22,7 @@ export const ModalApp: FC<ModalAppProps> = ({
   create,
 }) => {
   const [values, setValues] = useState({ title: "", body: "" });
+  const { error } = useAppSelector((state) => state.posts);
 
   const addNewPost = (event: MouseEvent<HTMLButtonElement>) => {
     event.preventDefault();
@@ -42,7 +44,11 @@ export const ModalApp: FC<ModalAppProps> = ({
       </Modal.Header>
       {variant === "modal" ? (
         <>
-          <Modal.Body>Вы действительно хотите удалить пост?</Modal.Body>
+          <Modal.Body>
+            {error
+              ? "Не удалось удалить. Попробуйте позже."
+              : "Вы действительно хотите удалить пост?"}
+          </Modal.Body>
           <Modal.Footer>
             <Button
               variant="secondary"

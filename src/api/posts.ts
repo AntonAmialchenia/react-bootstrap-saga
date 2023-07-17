@@ -1,12 +1,14 @@
 import axios from "axios";
-import { NewPost, Post } from "../types/types";
+import { NewPost, Post } from "../types";
 
 export const getPostsApi = async () => {
   return await axios.get<Post[]>("https://jsonplaceholder.typicode.com/posts");
 };
 
 export const deletePostApi = async (id: number) => {
-  return await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
+  return await axios.delete(
+    `https://jsonplacehмolder.typicode.com/posts/${id}`,
+  );
 };
 
 export const createPostApi = async (post: NewPost) => {

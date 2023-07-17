@@ -11,13 +11,13 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import { Post } from "../../types/types";
+import { Post } from "../../types";
 import { CommentsList } from "../CommentsList";
 import { ModalApp } from "../ModalApp";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getCommentsByPostId } from "../../store/slices/commentSlice";
 import { deletePost, updatePost } from "../../store/slices/postSlice";
+import { fetchComments } from "../../store/slices/commentSlice";
 
 import avatar from "../../assets/Avatar.jpg";
 import styles from "./PostItem.module.scss";
@@ -37,7 +37,7 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const [body, setBody] = useState(post.body);
 
   const handlerByComments = (id: number) => {
-    dispatch(getCommentsByPostId(id));
+    dispatch(fetchComments(id));
     setShow((prev) => !prev);
   };
 
