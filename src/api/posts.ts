@@ -6,9 +6,7 @@ export const getPostsApi = async () => {
 };
 
 export const deletePostApi = async (id: number) => {
-  return await axios.delete(
-    `https://jsonplacehмolder.typicode.com/posts/${id}`,
-  );
+  return await axios.delete(`https://jsonplaceholder.typicode.com/posts/${id}`);
 };
 
 export const createPostApi = async (post: NewPost) => {

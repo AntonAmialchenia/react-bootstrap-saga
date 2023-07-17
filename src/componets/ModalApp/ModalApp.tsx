@@ -65,22 +65,32 @@ export const ModalApp: FC<ModalAppProps> = ({
       ) : (
         <>
           <Form className="p-4 d-flex flex-column">
-            <Form.Group className="mb-3">
-              <Form.Label>Введите заголовок поста</Form.Label>
-              <Form.Control
-                onChange={(e) =>
-                  setValues({ ...values, title: e.target.value })
-                }
-                type="text"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Введите текст поста</Form.Label>
-              <Form.Control
-                onChange={(e) => setValues({ ...values, body: e.target.value })}
-                type="text"
-              />
-            </Form.Group>
+            {error ? (
+              <Form.Label>
+                Не удалось создать пост, попробуйте позже.
+              </Form.Label>
+            ) : (
+              <>
+                <Form.Group className="mb-3">
+                  <Form.Label>Введите заголовок поста</Form.Label>
+                  <Form.Control
+                    onChange={(e) =>
+                      setValues({ ...values, title: e.target.value })
+                    }
+                    type="text"
+                  />
+                </Form.Group>
+                <Form.Group className="mb-3">
+                  <Form.Label>Введите текст поста</Form.Label>
+                  <Form.Control
+                    onChange={(e) =>
+                      setValues({ ...values, body: e.target.value })
+                    }
+                    type="text"
+                  />
+                </Form.Group>
+              </>
+            )}
             <Button onClick={addNewPost} className="align-self-end">
               Создать
             </Button>

@@ -1,6 +1,6 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { NewPost, Post } from "../../types";
-import { getPostsApi, deletePostApi } from "../../api/posts";
+import { getPostsApi, deletePostApi, createPostApi } from "../../api/posts";
 import { Status } from "../../enums";
 
 interface PostState {
@@ -33,19 +33,20 @@ export const deletePost = createAsyncThunk<void, number>(
   },
 );
 
+export const createPost = createAsyncThunk<Post, NewPost>(
+  "posts/createPosts",
+  async function (post) {
+    const { data } = await createPostApi(post);
+    return data;
+  },
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
     deletePostSuccess: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
-    },
-    createPost: (state, action: PayloadAction<NewPost>) => {
-      state;
-      action;
-    },
-    createPostSuccess: (state, action: PayloadAction<Post>) => {
-      state.items.unshift(action.payload);
     },
     updatePost: (state, action: PayloadAction<Post>) => {
       state.update = true;
@@ -77,16 +78,17 @@ const postsSlice = createSlice({
       })
       .addCase(deletePost.rejected, (state) => {
         state.error = true;
+      })
+      .addCase(createPost.fulfilled, (state, action: PayloadAction<Post>) => {
+        state.items.unshift(action.payload);
+      })
+      .addCase(createPost.rejected, (state) => {
+        state.error = true;
       });
   },
 });
 
-export const {
-  deletePostSuccess,
-  createPost,
-  createPostSuccess,
-  updatePost,
-  updatePostSuccess,
-} = postsSlice.actions;
+export const { deletePostSuccess, updatePost, updatePostSuccess } =
+  postsSlice.actions;
 
 export default postsSlice.reducer;
