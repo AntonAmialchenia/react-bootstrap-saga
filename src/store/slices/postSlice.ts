@@ -1,6 +1,11 @@
 import { PayloadAction, createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { NewPost, Post } from "../../types";
-import { getPostsApi, deletePostApi, createPostApi } from "../../api/posts";
+import {
+  getPostsApi,
+  deletePostApi,
+  createPostApi,
+  updatePostApi,
+} from "../../api/posts";
 import { Status } from "../../enums";
 
 interface PostState {
@@ -41,22 +46,20 @@ export const createPost = createAsyncThunk<Post, NewPost>(
   },
 );
 
+export const updatePost = createAsyncThunk<Post, Post>(
+  "posts/updatePosts",
+  async function (post) {
+    const { data } = await updatePostApi(post);
+    return data;
+  },
+);
+
 const postsSlice = createSlice({
   name: "posts",
   initialState,
   reducers: {
     deletePostSuccess: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
-    },
-    updatePost: (state, action: PayloadAction<Post>) => {
-      state.update = true;
-      action;
-    },
-    updatePostSuccess: (state, action: PayloadAction<Post>) => {
-      state.items = state.items.map((item) =>
-        item.id === action.payload.id ? action.payload : item,
-      );
-      state.update = false;
     },
   },
   extraReducers: (builder) => {
@@ -84,11 +87,22 @@ const postsSlice = createSlice({
       })
       .addCase(createPost.rejected, (state) => {
         state.error = true;
+      })
+      .addCase(updatePost.pending, (state) => {
+        state.update = true;
+      })
+      .addCase(updatePost.fulfilled, (state, action: PayloadAction<Post>) => {
+        state.items = state.items.map((item) =>
+          item.id === action.payload.id ? action.payload : item,
+        );
+        state.update = false;
+      })
+      .addCase(updatePost.rejected, (state) => {
+        state.error = true;
       });
   },
 });
 
-export const { deletePostSuccess, updatePost, updatePostSuccess } =
-  postsSlice.actions;
+export const { deletePostSuccess } = postsSlice.actions;
 
 export default postsSlice.reducer;

@@ -104,7 +104,9 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
                     type="text"
                   />
                 ) : (
-                  <h3>{post.title}</h3>
+                  <h3>
+                    {post.id}. {post.title}
+                  </h3>
                 )}
               </Row>
               <Row>
