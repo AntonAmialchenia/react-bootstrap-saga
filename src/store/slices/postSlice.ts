@@ -13,6 +13,7 @@ interface PostState {
   status: Status;
   update: boolean;
   error: boolean;
+  disabled: boolean;
 }
 
 const initialState: PostState = {
@@ -20,6 +21,7 @@ const initialState: PostState = {
   update: false,
   status: Status.LOADING,
   error: false,
+  disabled: false,
 };
 
 export const fetchPosts = createAsyncThunk<Post[]>(
@@ -61,6 +63,9 @@ const postsSlice = createSlice({
     deletePostSuccess: (state, action: PayloadAction<number>) => {
       state.items = state.items.filter((item) => item.id !== action.payload);
     },
+    onError: (state, action: PayloadAction<boolean>) => {
+      state.error = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -96,13 +101,16 @@ const postsSlice = createSlice({
           item.id === action.payload.id ? action.payload : item,
         );
         state.update = false;
+        state.error = false;
+        state.disabled = false;
       })
       .addCase(updatePost.rejected, (state) => {
         state.error = true;
+        state.disabled = true;
       });
   },
 });
 
-export const { deletePostSuccess } = postsSlice.actions;
+export const { deletePostSuccess, onError } = postsSlice.actions;
 
 export default postsSlice.reducer;

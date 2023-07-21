@@ -28,7 +28,7 @@ interface PostItemProps {
 
 export const PostItem: FC<PostItemProps> = ({ post }) => {
   const dispatch = useAppDispatch();
-  const { update } = useAppSelector((state) => state.posts);
+  const { update, error, disabled } = useAppSelector((state) => state.posts);
   const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -44,7 +44,9 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const handlerUpdatePost = (post: Post) => {
     const postUpdate = { ...post, title, body };
     dispatch(updatePost(postUpdate));
-    setTimeout(() => setEdit(update), 1250);
+    if (!error) {
+      setTimeout(() => setEdit(update), 1250);
+    }
   };
 
   const handlerDeletePost = (id: number) => {
@@ -92,7 +94,11 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
                     <span>Save</span>
                   </Button>
                 ) : (
-                  <Button onClick={() => setEdit((prev) => !prev)}>Edit</Button>
+                  <Button
+                    disabled={disabled}
+                    onClick={() => setEdit((prev) => !prev)}>
+                    Edit
+                  </Button>
                 )}
               </Col>
               <Row>
