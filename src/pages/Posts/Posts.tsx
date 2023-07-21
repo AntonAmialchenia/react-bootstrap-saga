@@ -18,7 +18,7 @@ export const Posts: FC = () => {
 
   const postCreate = (newPost: NewPost) => {
     dispatch(createPost(newPost));
-    if (error) {
+    if (!error) {
       setShow((prev) => !prev);
     }
   };
