@@ -1,5 +1,5 @@
 import axios from "axios";
-import { NewPost, Post } from "../types/types";
+import { NewPost, Post } from "../types";
 
 export const getPostsApi = async () => {
   return await axios.get<Post[]>("https://jsonplaceholder.typicode.com/posts");

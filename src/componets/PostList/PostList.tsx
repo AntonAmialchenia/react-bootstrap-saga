@@ -1,7 +1,7 @@
 import { FC } from "react";
 
 import { PostItem } from "../PostItem";
-import { Post } from "../../types/types";
+import { Post } from "../../types";
 
 interface PostListProps {
   posts: Post[];

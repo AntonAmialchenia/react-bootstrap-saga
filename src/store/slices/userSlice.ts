@@ -1,30 +1,45 @@
-import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { User } from "../../types/types";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { User } from "../../types";
+import { Status } from "../../enums";
+import { getUserApi } from "../../api/user";
 
 interface UserState {
   user: User;
-  loading: boolean;
+  status: Status;
 }
 
 const initialState: UserState = {
   user: {} as User,
-  loading: false,
+  status: Status.LOADING,
 };
+
+export const fetchUser = createAsyncThunk<User, number>(
+  "user/fetchUserStatus",
+  async function (id) {
+    const { data } = await getUserApi(id);
+    return data;
+  },
+);
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    getUser: (state, action: PayloadAction<number>) => {
-      action;
-      state.loading = true;
-    },
-    getUserSuccess: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-      state.loading = false;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(fetchUser.pending, (state) => {
+        state.status = Status.LOADING;
+        state.user = {} as User;
+      })
+      .addCase(fetchUser.fulfilled, (state, action) => {
+        state.user = action.payload;
+        state.status = Status.SUCCESS;
+      })
+      .addCase(fetchUser.rejected, (state) => {
+        state.status = Status.ERROR;
+        state.user = {} as User;
+      });
   },
 });
 
-export const { getUser, getUserSuccess } = userSlice.actions;
 export default userSlice.reducer;

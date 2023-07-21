@@ -1,29 +1,36 @@
 import { FC, useEffect } from "react";
 import { Button, Container } from "react-bootstrap";
-import { PostList } from "../../componets/PostList";
-import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { Link, useParams } from "react-router-dom";
-import { getPosts } from "../../store/slices/postSlice";
+import { PostList } from "../../componets/PostList";
 import { SpinnerApp } from "../../componets/SpinnerApp";
-import { getUser } from "../../store/slices/userSlice";
+
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { fetchPosts } from "../../store/slices/postSlice";
+import { fetchUser } from "../../store/slices/userSlice";
 
 export const UserDetails: FC = () => {
   const dispatch = useAppDispatch();
   const params = useParams();
 
-  const { items, loading: loadingPosts } = useAppSelector(
-    (state) => state.posts,
-  );
-  const { user, loading: loadingUser } = useAppSelector((state) => state.user);
+  const { items, status: statusPosts } = useAppSelector((state) => state.posts);
+  const { user, status: statusUser } = useAppSelector((state) => state.user);
 
   const posts = items.filter((post) => post.userId === Number(params.id));
 
   useEffect(() => {
-    dispatch(getPosts());
-    dispatch(getUser(Number(params.id)));
+    dispatch(fetchPosts());
+    dispatch(fetchUser(Number(params.id)));
   }, [dispatch, params.id]);
 
-  return loadingUser ? (
+  return statusUser === "error" ? (
+    <>
+      <h2>Произошла ошибка 😕</h2>
+      <p>
+        К сожалению, не удалось получть пользователя. Попробуйте повторить
+        попытку позже.
+      </p>
+    </>
+  ) : statusUser === "loading" ? (
     <SpinnerApp />
   ) : (
     <Container>
@@ -40,7 +47,23 @@ export const UserDetails: FC = () => {
       <p>
         Posts <strong>{user.name}:</strong>
       </p>
-      {loadingPosts ? <SpinnerApp /> : <PostList posts={posts} />}
+      {statusPosts === "error" ? (
+        <>
+          <h2>Произошла ошибка 😕</h2>
+          <p>
+            К сожалению, не удалось получть посты. Попробуйте повторить попытку
+            позже.
+          </p>
+        </>
+      ) : (
+        <>
+          {statusPosts === "loading" ? (
+            <SpinnerApp />
+          ) : (
+            <PostList posts={posts} />
+          )}
+        </>
+      )}
     </Container>
   );
 };
