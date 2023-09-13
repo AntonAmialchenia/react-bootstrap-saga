@@ -4,13 +4,15 @@ import { useAppSelector } from "../../store/hooks";
 
 import { CommentItem } from "../CommentItem";
 import { SpinnerApp } from "../SpinnerApp";
+import { useComments } from "../../store/useComments";
 
 export const CommentsList: FC = () => {
-  const { items, status } = useAppSelector((state) => state.comments);
+  // const { items, status } = useAppSelector((state) => state.comments);
+  const { items, error, isLoading } = useComments((state) => state);
 
   return (
     <>
-      {status === "error" ? (
+      {error ? (
         <>
           <h2>Произошла ошибка 😕</h2>
           <p>
@@ -20,7 +22,7 @@ export const CommentsList: FC = () => {
         </>
       ) : (
         <>
-          {status === "loading" ? (
+          {isLoading ? (
             <SpinnerApp />
           ) : (
             items.map((comment) => (

@@ -17,10 +17,10 @@ import { ModalApp } from "../ModalApp";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { deletePost, updatePost } from "../../store/slices/postSlice";
-import { fetchComments } from "../../store/slices/commentSlice";
 
 import avatar from "../../assets/Avatar.jpg";
 import styles from "./PostItem.module.scss";
+import { useComments } from "../../store/useComments";
 
 interface PostItemProps {
   post: Post;
@@ -28,6 +28,7 @@ interface PostItemProps {
 
 export const PostItem: FC<PostItemProps> = ({ post }) => {
   const dispatch = useAppDispatch();
+  const fetchComments = useComments((state) => state.fetchComments);
   const { update, error, disabled } = useAppSelector((state) => state.posts);
   const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
@@ -37,7 +38,7 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const [body, setBody] = useState(post.body);
 
   const handlerByComments = (id: number) => {
-    dispatch(fetchComments(id));
+    fetchComments(id);
     setShow((prev) => !prev);
   };
 
