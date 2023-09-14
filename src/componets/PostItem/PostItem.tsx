@@ -11,16 +11,16 @@ import {
   Spinner,
 } from "react-bootstrap";
 
-import { Post } from "../../types/types";
+import { Post } from "../../types";
 import { CommentsList } from "../CommentsList";
 import { ModalApp } from "../ModalApp";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { getCommentsByPostId } from "../../store/slices/commentSlice";
 import { deletePost, updatePost } from "../../store/slices/postSlice";
 
 import avatar from "../../assets/Avatar.jpg";
 import styles from "./PostItem.module.scss";
+import { useComments } from "../../store/useComments";
 
 interface PostItemProps {
   post: Post;
@@ -28,7 +28,8 @@ interface PostItemProps {
 
 export const PostItem: FC<PostItemProps> = ({ post }) => {
   const dispatch = useAppDispatch();
-  const { update } = useAppSelector((state) => state.posts);
+  const fetchComments = useComments((state) => state.fetchComments);
+  const { update, error, disabled } = useAppSelector((state) => state.posts);
   const navigate = useNavigate();
   const [show, setShow] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
@@ -37,14 +38,16 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
   const [body, setBody] = useState(post.body);
 
   const handlerByComments = (id: number) => {
-    dispatch(getCommentsByPostId(id));
+    fetchComments(id);
     setShow((prev) => !prev);
   };
 
   const handlerUpdatePost = (post: Post) => {
     const postUpdate = { ...post, title, body };
     dispatch(updatePost(postUpdate));
-    setTimeout(() => setEdit(update), 1250);
+    if (!error) {
+      setTimeout(() => setEdit(update), 1250);
+    }
   };
 
   const handlerDeletePost = (id: number) => {
@@ -92,7 +95,11 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
                     <span>Save</span>
                   </Button>
                 ) : (
-                  <Button onClick={() => setEdit((prev) => !prev)}>Edit</Button>
+                  <Button
+                    disabled={disabled}
+                    onClick={() => setEdit((prev) => !prev)}>
+                    Edit
+                  </Button>
                 )}
               </Col>
               <Row>
@@ -104,7 +111,9 @@ export const PostItem: FC<PostItemProps> = ({ post }) => {
                     type="text"
                   />
                 ) : (
-                  <h3>{post.title}</h3>
+                  <h3>
+                    {post.id}. {post.title}
+                  </h3>
                 )}
               </Row>
               <Row>
